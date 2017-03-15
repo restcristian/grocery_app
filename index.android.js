@@ -12,11 +12,12 @@ import {
   View
 } from 'react-native';
 import GroceryApp from './components/GroceryApp';
+import NativeBase from './components/NativeBase';
 
 export default class groceryApp extends Component {
   render() {
     return (
-      <GroceryApp />
+      <NativeBase />
     );
   }
 }

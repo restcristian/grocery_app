@@ -35,10 +35,11 @@ export default class GroceryApp extends Component{
             null,
             [
                 {
-                    text:'OK', 
+                    text:'Add', 
                     onPress:(text)=>{
                         console.log('Ok Pressed');
-                        this.itemsRef.push({title:text});
+                        this.itemsRef.push({itemName:'item',title:'test'});
+                        this.listenForItems(this.itemsRef);
                       },
                 },
                 {
@@ -53,7 +54,6 @@ export default class GroceryApp extends Component{
 
     listenForItems(itemsRef){
 
-        console.log('onListenForItems',itemsRef);
         // itemsRef.on('value',(snap)=>{
         //     let items = [];
         //     console.log('items',items);
@@ -84,18 +84,21 @@ export default class GroceryApp extends Component{
                 this.setState({
                     dataSource:this.state.dataSource.cloneWithRows(items)
                 });
-                console.log('items',items);
+                console.log('Returned',items);
             });
     }
     _renderItem(item){
         const onPress = ()=>{
             Alert.alert(
-                'Complete Item',
+                'Are you sure you want to cross-out this item?',
                 null,
                 [
                     {
                         text:'Complete',
-                        onPress:(text)=>this.itemsRef.child(item._key).remove()
+                        onPress:(text)=>{
+                            this.itemsRef.child(item.key).remove();
+                            this.listenForItems(this.itemsRef);
+                        }
                     },
                     {
                         text:'Cancel',
@@ -112,7 +115,7 @@ export default class GroceryApp extends Component{
     render(){
         return (
                  <View style = {styles.container}>
-                     <StatusBar title = "Grocery List" />
+                     <StatusBar title = "My Grocery List" />
                      <ListView 
                         dataSource= {this.state.dataSource}
                         renderRow = {this._renderItem.bind(this)}
